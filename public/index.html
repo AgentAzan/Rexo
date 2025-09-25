@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rexo Dashboard</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #23272a; color: white; text-align: center; }
+        .container { background-color: #2c2f33; padding: 50px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+        h1 { color: #7289da; }
+        .login-button { display: inline-block; padding: 10px 20px; background-color: #7289da; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; transition: background-color 0.2s; }
+        .login-button:hover { background-color: #677bc4; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Rexo's Dashboard</h1>
+        <p>Your server management portal.</p>
+        <a href="/login" class="login-button">Login with Discord</a>
+    </div>
+
+    <script>
+        // CLIENT-SIDE SCRIPT: Check session status via API
+        fetch('/api/user')
+            .then(res => res.json())
+            .then(data => {
+                // If the user is logged in, redirect them immediately to the dashboard.
+                if (data.loggedIn) {
+                    window.location.href = '/dashboard.html';
+                }
+            })
+            .catch(error => console.error("Error checking login status:", error));
+    </script>
+</body>
+</html>
