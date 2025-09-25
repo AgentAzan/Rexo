@@ -1,0 +1,34 @@
+{
+  "name": "discord-v14-bot",
+  "version": "1.0.0",
+  "description": "A comprehensive Discord bot project with web dashboard.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dashboard": "node server.js",
+    "dev": "npm run dashboard & npm run start"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "dashboard",
+    "express",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    // Dashboard Dependencies
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "passport": "^0.7.0",
+    "passport-discord": "^0.1.4",
+    "ejs": "^3.1.10",
+    // Bot Dependencies
+    "@discordjs/rest": "^2.3.0",
+    "discord-api-types": "^0.37.81",
+    "discord.js": "^14.22.1",
+    "dotenv": "^16.4.5"
+  }
+}
