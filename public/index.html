@@ -15,11 +15,10 @@
             background: #0d1117;
         }
         
-        /* Wick-inspired active sidebar link */
+        /* === PILL-STYLE ACTIVE SIDEBAR LINK (Design Change) === */
         .sidebar-link.active {
-            background-color: #1f2937; /* Darker slate */
+            background-color: #374151; /* Dark Gray-700 for a distinct pill */
             color: #38bdf8; /* Sky blue accent */
-            border-left-color: #38bdf8;
             font-weight: 600;
         }
 
@@ -69,13 +68,13 @@
             <nav class="flex-1 space-y-1">
                 <p class="text-xs font-semibold uppercase text-gray-500 mb-3 ml-3">Navigation</p>
                 
-                <a id="nav-overview" onclick="switchSection('overview')" href="#" class="sidebar-link active flex items-center p-3 rounded-xl text-sm font-medium hover:bg-gray-700 transition duration-150 border-l-4 border-transparent">
+                <a id="nav-overview" onclick="switchSection('overview')" href="#" class="sidebar-link active flex items-center p-3 rounded-xl text-sm font-medium hover:bg-gray-700 transition duration-150">
                     <i class="fas fa-desktop w-5 mr-3 text-cyan-400"></i> Overview & Stats
                 </a>
-                <a id="nav-servers" onclick="switchSection('servers')" href="#" class="sidebar-link flex items-center p-3 rounded-xl text-sm font-medium hover:bg-gray-700 transition duration-150 border-l-4 border-transparent">
+                <a id="nav-servers" onclick="switchSection('servers')" href="#" class="sidebar-link flex items-center p-3 rounded-xl text-sm font-medium hover:bg-gray-700 transition duration-150">
                     <i class="fas fa-server w-5 mr-3 text-indigo-400"></i> Select Server
                 </a>
-                <a id="nav-settings" onclick="switchSection('settings')" href="#" class="sidebar-link flex items-center p-3 rounded-xl text-sm font-medium hover:bg-gray-700 transition duration-150 border-l-4 border-transparent">
+                <a id="nav-settings" onclick="switchSection('settings')" href="#" class="sidebar-link flex items-center p-3 rounded-xl text-sm font-medium hover:bg-gray-700 transition duration-150">
                     <i class="fas fa-shield-alt w-5 mr-3 text-red-400"></i> Configuration
                 </a>
             </nav>
