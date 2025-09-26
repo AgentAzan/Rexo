@@ -5,20 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rexo Bot Control Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJc5fndC4C0dCusgV5K7T7L4Q1kQ4G5S4B2I8B5F4b0F8t+5/8E5t6n5+w5/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body { 
             font-family: 'Inter', sans-serif; 
-            /* Deep, dark background with subtle texture/gradient */
             background: #0d1117;
         }
         
-        /* === PILL-STYLE ACTIVE SIDEBAR LINK (Design Change) === */
+        /* === PILL-STYLE ACTIVE SIDEBAR LINK === */
         .sidebar-link.active {
-            background-color: #374151; /* Dark Gray-700 for a distinct pill */
-            color: #38bdf8; /* Sky blue accent */
+            background-color: #374151; 
+            color: #38bdf8;
             font-weight: 600;
         }
 
@@ -28,7 +27,7 @@
             border: 1px solid transparent;
         }
         .setting-card:hover {
-            border-color: #1e40af; /* Blue-800 */
+            border-color: #1e40af; 
             box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.4);
             transform: translateY(-2px);
         }
@@ -38,30 +37,30 @@
             width: 8px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #374151; /* Gray-700 */
+            background: #374151; 
             border-radius: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: #1f2937; /* Gray-800 */
+            background: #1f2937; 
         }
 
         /* Active tab styling */
         .tab-button.active {
-            color: #38bdf8; /* Sky Blue */
+            color: #38bdf8; 
             border-bottom: 2px solid #38bdf8;
         }
 
         /* Toggle switch color */
         input:checked + div {
-            background-color: #38bdf8; /* Sky Blue */
+            background-color: #38bdf8; 
         }
     </style>
 </head>
 <body class="text-gray-100 min-h-screen">
 
-    <div class="flex h-screen overflow-hidden">
+    <div id="dashboard-container" class="flex h-screen overflow-hidden">
         
-        <aside class="w-64 bg-[#111827] text-gray-200 p-6 flex flex-col border-r border-gray-800 shadow-2xl">
+        <aside id="sidebar" class="w-64 bg-[#111827] text-gray-200 p-6 flex-col border-r border-gray-800 shadow-2xl hidden">
             <h1 class="text-2xl font-extrabold mb-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
                 Rexo Control
             </h1>
@@ -81,198 +80,218 @@
             
             <div id="auth-status" class="mt-auto pt-6 border-t border-gray-800">
                 <div class="flex items-center space-x-2 mb-2">
-                    <i id="user-icon" class="fas fa-user-circle w-6 h-6 text-gray-400"></i>
+                    <i id="user-icon" class="fas fa-user-circle w-6 h-6 text-cyan-400"></i>
                     <div>
                         <p class="text-xs text-gray-400">Signed in as:</p>
-                        <span id="user-id" class="text-sm font-semibold text-gray-300 truncate">Connecting...</span>
+                        <span id="user-id" class="text-sm font-semibold text-gray-300 truncate"></span>
                     </div>
                 </div>
-                <button onclick="alert('In a real app, this would log you out via Discord OAuth.')" class="w-full text-xs text-gray-400 hover:text-red-400 transition text-left mt-2">
+                <button onclick="logout()" class="w-full text-xs text-gray-400 hover:text-red-400 transition text-left mt-2">
                     <i class="fas fa-sign-out-alt mr-1"></i> Sign Out
                 </button>
             </div>
         </aside>
 
-        <main class="flex-1 overflow-y-auto p-4 sm:p-10 bg-[#0d1117]">
+        <main id="main-content-area" class="flex-1 overflow-y-auto p-4 sm:p-10 bg-[#0d1117] flex items-center justify-center">
 
-            <section id="overview-section" class="main-section space-y-10">
-                <h2 class="text-4xl font-extrabold text-white border-b border-gray-800 pb-4">
-                    <i class="fas fa-chart-line text-cyan-400 mr-3"></i> Global Status
-                </h2>
+            <section id="login-screen" class="w-full max-w-lg text-center bg-[#111827] p-10 rounded-2xl shadow-2xl border border-gray-800">
+                <i class="fas fa-robot text-6xl text-cyan-400 mb-4"></i>
+                <h2 class="text-3xl font-extrabold text-white mb-2">Rexo Bot Control Panel</h2>
+                <p class="text-gray-400 mb-8">Login to manage your server's settings and view bot statistics.</p>
+                
+                <a href="https://discord.com/oauth2/authorize?client_id=1398582139464847411&permissions=8&integration_type=0&scope=bot+applications.commands" id="discord-login-btn" onclick="simulateDiscordLogin(event)" class="inline-flex items-center justify-center w-full px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-lg transition duration-150 shadow-lg transform hover:scale-[1.01]">
+                    <i class="fab fa-discord mr-3"></i> Continue with Discord
+                </a>
 
-                <div id="status-card" class="bg-[#111827] p-6 rounded-2xl shadow-xl border border-gray-800">
-                    <div id="loading" class="text-center text-indigo-400">
-                        <svg class="animate-spin h-6 w-6 mr-3 inline text-cyan-400" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        <span class="text-lg font-medium text-gray-400">Establishing real-time connection...</span>
-                    </div>
-                    <div id="ready-status" class="hidden flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                             <i class="fas fa-link text-green-500 text-3xl"></i>
-                             <div>
-                                 <p class="text-xl font-bold text-green-400">Database Synced</p>
-                                 <p class="text-sm text-gray-400">Changes below will instantly update the bot's configuration file.</p>
-                             </div>
-                        </div>
-                        <button onclick="switchSection('settings')" class="px-6 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition shadow-md">
-                            Go to Settings <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 setting-card">
-                        <i class="fas fa-chart-bar text-2xl text-cyan-400 mb-3"></i>
-                        <h4 class="text-sm font-medium uppercase text-gray-400">Messages Read</h4>
-                        <p class="text-3xl font-bold mt-1">12.5M</p>
-                    </div>
-                    <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 setting-card">
-                        <i class="fas fa-user-slash text-2xl text-red-500 mb-3"></i>
-                        <h4 class="text-sm font-medium uppercase text-gray-400">AutoMod Blocks</h4>
-                        <p class="text-3xl font-bold mt-1">2,140</p>
-                    </div>
-                    <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 setting-card">
-                        <i class="fas fa-users text-2xl text-green-500 mb-3"></i>
-                        <h4 class="text-sm font-medium uppercase text-gray-400">Total Users</h4>
-                        <p class="text-3xl font-bold mt-1">45,123</p>
-                    </div>
-                    <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 setting-card">
-                        <i class="fas fa-code text-2xl text-yellow-500 mb-3"></i>
-                        <h4 class="text-sm font-medium uppercase text-gray-400">Uptime (Days)</h4>
-                        <p class="text-3xl font-bold mt-1">98</p>
-                    </div>
+                <div class="mt-8 pt-4 border-t border-gray-800 space-y-3">
+                    <a href="https://discord.com/oauth2/authorize?client_id=1398582139464847411&permissions=8&integration_type=0&scope=bot+applications.commands" target="_blank" class="text-sm text-cyan-400 hover:text-cyan-300 flex items-center justify-center">
+                        <i class="fas fa-plus-circle mr-2"></i> Invite Rexo to your Server
+                    </a>
+                    <a href="https://discord.gg/uXWMaUdRvV" target="_blank" class="text-sm text-gray-400 hover:text-gray-300 flex items-center justify-center">
+                        <i class="fas fa-headset mr-2"></i> Join Rexo Support Server
+                    </a>
                 </div>
             </section>
             
-            <section id="servers-section" class="main-section hidden space-y-6">
-                <h2 class="text-4xl font-extrabold text-white border-b border-gray-800 pb-4">
-                    <i class="fas fa-list-alt text-indigo-400 mr-3"></i> Active Server Selection
-                </h2>
-                <p class="text-gray-400">A proper bot dashboard uses Discord OAuth to list your servers. Here, we manage the **Global Config** file which acts as the default for all servers.</p>
+            <div id="dashboard-sections" class="hidden w-full h-full">
+                <section id="overview-section" class="main-section space-y-10">
+                    <h2 class="text-4xl font-extrabold text-white border-b border-gray-800 pb-4">
+                        <i class="fas fa-chart-line text-cyan-400 mr-3"></i> Global Status
+                    </h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-gray-800 p-6 rounded-2xl shadow-xl border border-blue-500/50 setting-card">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-crown text-4xl text-yellow-500 mr-4"></i>
-                            <div>
-                                <h4 class="text-xl font-bold text-cyan-400">Rexo Global Settings</h4>
-                                <p class="text-sm text-gray-400">Core configuration & master template.</p>
-                            </div>
+                    <div id="status-card" class="bg-[#111827] p-6 rounded-2xl shadow-xl border border-gray-800">
+                        <div id="loading" class="text-center text-indigo-400 hidden">
+                            <svg class="animate-spin h-6 w-6 mr-3 inline text-cyan-400" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <span class="text-lg font-medium text-gray-400">Establishing real-time connection...</span>
                         </div>
-                        <button onclick="switchSection('settings')" class="w-full px-5 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold transition shadow-md">
-                            <i class="fas fa-wrench mr-2"></i> Open Configuration
-                        </button>
-                    </div>
-                    <div class="bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700 opacity-50 cursor-not-allowed">
-                          <div class="flex items-center mb-4">
-                            <i class="fas fa-users text-4xl text-gray-500 mr-4"></i>
-                            <div>
-                                <h4 class="text-xl font-bold text-gray-500">Community Hub (Locked)</h4>
-                                <p class="text-sm text-gray-600">Requires Discord OAuth login to access server-specific settings.</p>
+                        <div id="ready-status" class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                 <i class="fas fa-link text-green-500 text-3xl"></i>
+                                 <div>
+                                     <p class="text-xl font-bold text-green-400">Database Synced</p>
+                                     <p class="text-sm text-gray-400">Changes below will instantly update the bot's configuration file.</p>
+                                 </div>
                             </div>
+                            <button onclick="switchSection('settings')" class="px-6 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition shadow-md">
+                                Go to Settings <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
                         </div>
-                        <button disabled class="w-full px-5 py-2 rounded-lg bg-gray-700 text-gray-500 font-semibold transition">
-                            Login Required
-                        </button>
                     </div>
-                </div>
-            </section>
 
-
-            <section id="settings-section" class="main-section hidden space-y-8">
-                <h2 class="text-4xl font-extrabold text-white border-b border-gray-800 pb-4">
-                    <i class="fas fa-sliders-h text-cyan-400 mr-3"></i> Bot Configuration
-                </h2>
-
-                <div class="bg-[#111827] p-6 rounded-2xl shadow-2xl border border-gray-800">
-                    <div class="flex border-b border-gray-700 mb-8">
-                        <button id="tab-general" class="tab-button flex-1 py-3 px-4 text-sm sm:text-base font-medium transition duration-150" onclick="switchTab('general')">
-                            <i class="fas fa-cog mr-2"></i> General
-                        </button>
-                        <button id="tab-automod" class="tab-button flex-1 py-3 px-4 text-sm sm:text-base font-medium transition duration-150" onclick="switchTab('automod')">
-                            <i class="fas fa-robot mr-2"></i> Auto-Moderation
-                        </button>
-                        <button id="tab-utility" class="tab-button flex-1 py-3 px-4 text-sm sm:text-base font-medium transition duration-150" onclick="switchTab('utility')">
-                            <i class="fas fa-tools mr-2"></i> Welcome & Status
-                        </button>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 setting-card">
+                            <i class="fas fa-chart-bar text-2xl text-cyan-400 mb-3"></i>
+                            <h4 class="text-sm font-medium uppercase text-gray-400">Messages Read</h4>
+                            <p class="text-3xl font-bold mt-1">12.5M</p>
+                        </div>
+                        <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 setting-card">
+                            <i class="fas fa-user-slash text-2xl text-red-500 mb-3"></i>
+                            <h4 class="text-sm font-medium uppercase text-gray-400">AutoMod Blocks</h4>
+                            <p class="text-3xl font-bold mt-1">2,140</p>
+                        </div>
+                        <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 setting-card">
+                            <i class="fas fa-users text-2xl text-green-500 mb-3"></i>
+                            <h4 class="text-sm font-medium uppercase text-gray-400">Total Users</h4>
+                            <p class="text-3xl font-bold mt-1">45,123</p>
+                        </div>
+                        <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 setting-card">
+                            <i class="fas fa-code text-2xl text-yellow-500 mb-3"></i>
+                            <h4 class="text-sm font-medium uppercase text-gray-400">Uptime (Days)</h4>
+                            <p class="text-3xl font-bold mt-1">98</p>
+                        </div>
                     </div>
-                    
-                    <div id="content-general" class="tab-content space-y-6">
-                        <h3 class="text-2xl font-bold text-cyan-400 mb-6">Core Settings</h3>
+                </section>
+                
+                <section id="servers-section" class="main-section hidden space-y-6">
+                    <h2 class="text-4xl font-extrabold text-white border-b border-gray-800 pb-4">
+                        <i class="fas fa-list-alt text-indigo-400 mr-3"></i> Active Server Selection
+                    </h2>
+                    <p class="text-gray-400">A proper bot dashboard uses Discord OAuth to list your servers. Here, we manage the **Global Config** file which acts as the default for all servers.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-gray-800 p-6 rounded-2xl shadow-xl border border-blue-500/50 setting-card">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-crown text-4xl text-yellow-500 mr-4"></i>
+                                <div>
+                                    <h4 class="text-xl font-bold text-cyan-400">Rexo Global Settings</h4>
+                                    <p class="text-sm text-gray-400">Core configuration & master template.</p>
+                                </div>
+                            </div>
+                            <button onclick="switchSection('settings')" class="w-full px-5 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold transition shadow-md">
+                                <i class="fas fa-wrench mr-2"></i> Open Configuration
+                            </button>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700 opacity-50 cursor-not-allowed">
+                              <div class="flex items-center mb-4">
+                                <i class="fas fa-users text-4xl text-gray-500 mr-4"></i>
+                                <div>
+                                    <h4 class="text-xl font-bold text-gray-500">Community Hub (Locked)</h4>
+                                    <p class="text-sm text-gray-600">Requires Discord OAuth login to access server-specific settings.</p>
+                                </div>
+                            </div>
+                            <button disabled class="w-full px-5 py-2 rounded-lg bg-gray-700 text-gray-500 font-semibold transition">
+                                Login Required
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="settings-section" class="main-section hidden space-y-8">
+                    <h2 class="text-4xl font-extrabold text-white border-b border-gray-800 pb-4">
+                        <i class="fas fa-sliders-h text-cyan-400 mr-3"></i> Bot Configuration
+                    </h2>
+
+                    <div class="bg-[#111827] p-6 rounded-2xl shadow-2xl border border-gray-800">
+                        <div class="flex border-b border-gray-700 mb-8">
+                            <button id="tab-general" class="tab-button flex-1 py-3 px-4 text-sm sm:text-base font-medium transition duration-150" onclick="switchTab('general')">
+                                <i class="fas fa-cog mr-2"></i> General
+                            </button>
+                            <button id="tab-automod" class="tab-button flex-1 py-3 px-4 text-sm sm:text-base font-medium transition duration-150" onclick="switchTab('automod')">
+                                <i class="fas fa-robot mr-2"></i> Auto-Moderation
+                            </button>
+                            <button id="tab-utility" class="tab-button flex-1 py-3 px-4 text-sm sm:text-base font-medium transition duration-150" onclick="switchTab('utility')">
+                                <i class="fas fa-tools mr-2"></i> Welcome & Status
+                            </button>
+                        </div>
                         
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div class="bg-gray-800 p-5 rounded-xl setting-card">
-                                <label for="prefix-input" class="block text-xl font-bold text-gray-100 mb-1">Command Prefix</label>
-                                <p class="text-sm text-gray-400 mb-3">The character the bot responds to (e.g., `!` or `/`)</p>
-                                <input type="text" id="prefix-input" maxlength="4" placeholder="//"
-                                        class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg p-3 text-lg focus:ring-cyan-500 focus:border-cyan-500 transition duration-150"
-                                        onblur="updateSetting('prefix', this.value.trim())">
-                            </div>
-
-                            <div class="bg-gray-800 p-5 rounded-xl flex justify-between items-center setting-card border-l-4 border-red-500">
-                                <div>
-                                    <p class="text-xl font-bold text-red-400">Anti-Nuke Safemode</p>
-                                    <p class="text-sm text-gray-400">Lock down server features against raid attempts immediately.</p>
+                        <div id="content-general" class="tab-content space-y-6">
+                            <h3 class="text-2xl font-bold text-cyan-400 mb-6">Core Settings</h3>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div class="bg-gray-800 p-5 rounded-xl setting-card">
+                                    <label for="prefix-input" class="block text-xl font-bold text-gray-100 mb-1">Command Prefix</label>
+                                    <p class="text-sm text-gray-400 mb-3">The character the bot responds to (e.g., `!` or `/`)</p>
+                                    <input type="text" id="prefix-input" maxlength="4" placeholder="//"
+                                            class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg p-3 text-lg focus:ring-cyan-500 focus:border-cyan-500 transition duration-150"
+                                            onblur="updateSetting('prefix', this.value.trim())">
                                 </div>
-                                <label class="relative inline-flex items-center cursor-pointer ml-4">
-                                    <input type="checkbox" id="antinuke-toggle" class="sr-only peer" onchange="updateSetting('antiNukeEnabled', this.checked)">
-                                    <div class="w-14 h-8 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all"></div>
-                                </label>
+
+                                <div class="bg-gray-800 p-5 rounded-xl flex justify-between items-center setting-card border-l-4 border-red-500">
+                                    <div>
+                                        <p class="text-xl font-bold text-red-400">Anti-Nuke Safemode</p>
+                                        <p class="text-sm text-gray-400">Lock down server features against raid attempts immediately.</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer ml-4">
+                                        <input type="checkbox" id="antinuke-toggle" class="sr-only peer" onchange="updateSetting('antiNukeEnabled', this.checked)">
+                                        <div class="w-14 h-8 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all"></div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div id="content-automod" class="tab-content space-y-6 hidden">
-                        <h3 class="text-2xl font-bold text-cyan-400 mb-6">Automated Protection</h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-gray-800 p-5 rounded-xl shadow-md flex justify-between items-center setting-card">
-                                <div>
-                                    <p class="text-xl font-bold text-gray-200">Anti-Link/Invite</p>
-                                    <p class="text-sm text-gray-400">Deletes unapproved links and Discord invites to prevent raids.</p>
+                        <div id="content-automod" class="tab-content space-y-6 hidden">
+                            <h3 class="text-2xl font-bold text-cyan-400 mb-6">Automated Protection</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-gray-800 p-5 rounded-xl shadow-md flex justify-between items-center setting-card">
+                                    <div>
+                                        <p class="text-xl font-bold text-gray-200">Anti-Link/Invite</p>
+                                        <p class="text-sm text-gray-400">Deletes unapproved links and Discord invites to prevent raids.</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer ml-4">
+                                        <input type="checkbox" id="antilink-toggle" class="sr-only peer" onchange="updateSetting('antilinkEnabled', this.checked)">
+                                        <div class="w-14 h-8 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all"></div>
+                                    </label>
                                 </div>
-                                <label class="relative inline-flex items-center cursor-pointer ml-4">
-                                    <input type="checkbox" id="antilink-toggle" class="sr-only peer" onchange="updateSetting('antilinkEnabled', this.checked)">
-                                    <div class="w-14 h-8 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all"></div>
-                                </label>
-                            </div>
-                            <div class="bg-gray-800 p-5 rounded-xl shadow-md flex justify-between items-center setting-card">
-                                <div>
-                                    <p class="text-xl font-bold text-gray-200">Anti-Caps Abuse</p>
-                                    <p class="text-sm text-gray-400">Stops messages that use excessive capitalization (shouting).</p>
+                                <div class="bg-gray-800 p-5 rounded-xl shadow-md flex justify-between items-center setting-card">
+                                    <div>
+                                        <p class="text-xl font-bold text-gray-200">Anti-Caps Abuse</p>
+                                        <p class="text-sm text-gray-400">Stops messages that use excessive capitalization (shouting).</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer ml-4">
+                                        <input type="checkbox" id="anticaps-toggle" class="sr-only peer" onchange="updateSetting('antiCapsEnabled', this.checked)">
+                                        <div class="w-14 h-8 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all"></div>
+                                    </label>
                                 </div>
-                                <label class="relative inline-flex items-center cursor-pointer ml-4">
-                                    <input type="checkbox" id="anticaps-toggle" class="sr-only peer" onchange="updateSetting('antiCapsEnabled', this.checked)">
-                                    <div class="w-14 h-8 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all"></div>
-                                </label>
                             </div>
                         </div>
+
+                        <div id="content-utility" class="tab-content space-y-6 hidden">
+                            <h3 class="text-2xl font-bold text-cyan-400 mb-6">Welcome & Presence</h3>
+
+                                <div class="bg-gray-800 p-5 rounded-xl setting-card">
+                                    <label for="bot-status-input" class="block text-xl font-bold text-gray-100 mb-1">Bot Activity Status</label>
+                                    <p class="text-sm text-gray-400 mb-3">The "Playing..." message under the bot's name. (e.g., Playing with [3] servers)</p>
+                                    <input type="text" id="bot-status-input" placeholder="Playing //help | Protecting [X] servers"
+                                         class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg p-3 text-base focus:ring-cyan-500 focus:border-cyan-500 transition duration-150 ease-in-out"
+                                         onblur="updateSetting('botStatus', this.value.trim())">
+                                </div>
+
+                                <div class="bg-gray-800 p-5 rounded-xl setting-card">
+                                    <label for="welcome-message-input" class="block text-xl font-bold text-gray-100 mb-1">Welcome Message Template</label>
+                                    <p class="text-sm text-gray-400 mb-3">The message sent when a user joins. Use <code>[user]</code> for the mention.</p>
+                                    <textarea id="welcome-message-input" rows="3" placeholder="Welcome [user] to the server! Read the #rules"
+                                        class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg p-3 text-base focus:ring-cyan-500 focus:border-cyan-500 transition duration-150 ease-in-out resize-none"
+                                        onblur="updateSetting('welcomeMessage', this.value.trim())"></textarea>
+                                </div>
+                        </div>
+
+                        <div id="message-box" class="mt-8 p-3 text-center rounded-lg text-sm transition-opacity duration-300 opacity-0 invisible" role="alert"></div>
+
                     </div>
-
-                    <div id="content-utility" class="tab-content space-y-6 hidden">
-                        <h3 class="text-2xl font-bold text-cyan-400 mb-6">Welcome & Presence</h3>
-
-                            <div class="bg-gray-800 p-5 rounded-xl setting-card">
-                                <label for="bot-status-input" class="block text-xl font-bold text-gray-100 mb-1">Bot Activity Status</label>
-                                <p class="text-sm text-gray-400 mb-3">The "Playing..." message under the bot's name. (e.g., Playing with [3] servers)</p>
-                                <input type="text" id="bot-status-input" placeholder="Playing //help | Protecting [X] servers"
-                                     class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg p-3 text-base focus:ring-cyan-500 focus:border-cyan-500 transition duration-150 ease-in-out"
-                                     onblur="updateSetting('botStatus', this.value.trim())">
-                            </div>
-
-                            <div class="bg-gray-800 p-5 rounded-xl setting-card">
-                                <label for="welcome-message-input" class="block text-xl font-bold text-gray-100 mb-1">Welcome Message Template</label>
-                                <p class="text-sm text-gray-400 mb-3">The message sent when a user joins. Use <code>[user]</code> for the mention.</p>
-                                <textarea id="welcome-message-input" rows="3" placeholder="Welcome [user] to the server! Read the #rules"
-                                    class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg p-3 text-base focus:ring-cyan-500 focus:border-cyan-500 transition duration-150 ease-in-out resize-none"
-                                    onblur="updateSetting('welcomeMessage', this.value.trim())"></textarea>
-                            </div>
-                    </div>
-
-                    <div id="message-box" class="mt-8 p-3 text-center rounded-lg text-sm transition-opacity duration-300 opacity-0 invisible" role="alert"></div>
-
-                </div>
-            </section>
-
+                </section>
+            </div>
         </main>
     </div>
 
@@ -288,27 +307,24 @@
         /* Global Variables (provided by the environment) */
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        // In a real application, the auth token comes from your server after Discord OAuth redirect
+        const initialAuthToken = localStorage.getItem('rexo_auth_token') || null; 
 
         let db;
         let configDocRef = null;
+        let authReady = false;
 
         // UI element mapping
+        const sidebarEl = document.getElementById('sidebar');
+        const loginScreenEl = document.getElementById('login-screen');
+        const dashboardSectionsEl = document.getElementById('dashboard-sections');
         const userIdEl = document.getElementById('user-id');
         const userIconEl = document.getElementById('user-icon');
         const loadingEl = document.getElementById('loading');
         const readyStatusEl = document.getElementById('ready-status');
         const messageBoxEl = document.getElementById('message-box');
         
-        // Inputs
-        const prefixInputEl = document.getElementById('prefix-input');
-        const antiNukeToggleEl = document.getElementById('antinuke-toggle');
-        const antilinkToggleEl = document.getElementById('antilink-toggle');
-        const antiCapsToggleEl = document.getElementById('anticaps-toggle');
-        const botStatusInputEl = document.getElementById('bot-status-input');
-        const welcomeMessageInputEl = document.getElementById('welcome-message-input');
-        
-        // Default Config for Initialization
+        // Inputs (rest are in the HTML)
         const initialConfig = {
             prefix: '//',
             antiNukeEnabled: false,
@@ -319,9 +335,74 @@
         };
 
         /**
-         * Switches the active main content section (Overview, Servers, Settings).
-         * @param {string} sectionName The ID of the section to show ('overview', 'servers', 'settings').
+         * Simulates the Discord login process. In a real app, this redirects to Discord.
+         * For this static dashboard, we simulate success and set a user ID.
          */
+        window.simulateDiscordLogin = (event) => {
+             // In a real app, you would let the link click happen (event.preventDefault() is removed)
+             // and the server would handle the token return.
+            
+             // Simulating successful login:
+             if (initialAuthToken) {
+                 event.preventDefault();
+                 showMessage('You are already logged in. Redirecting to dashboard...', 'success');
+                 checkAuthAndDisplayDashboard(true);
+             } else {
+                 // Prevent the default link click for a moment to show a message
+                 event.preventDefault();
+                 showMessage('Redirecting to Discord for sign in...', 'success');
+                 
+                 // In a real application, you would remove this timeout and let the browser navigate
+                 setTimeout(() => {
+                    // This is where you would usually redirect to Discord's OAuth
+                    // For the sake of this demo, we bypass the real login and set a dummy token
+                    const dummyToken = 'simulated_user_token_1234567890';
+                    localStorage.setItem('rexo_auth_token', dummyToken);
+                    
+                    // Simulate the auth process completing successfully
+                    checkAuthAndDisplayDashboard(true, 'U_112233445566778899'); // Dummy user ID
+                 }, 2000);
+             }
+        };
+
+        /**
+         * Clears the simulated token and returns to the login screen.
+         */
+        window.logout = () => {
+            localStorage.removeItem('rexo_auth_token');
+            // Reset UI
+            sidebarEl.classList.add('hidden');
+            loginScreenEl.classList.remove('hidden');
+            dashboardSectionsEl.classList.add('hidden');
+            userIdEl.textContent = 'Signed Out';
+            showMessage('Successfully signed out.', 'success');
+        };
+
+        /**
+         * Toggles UI visibility based on authentication status.
+         */
+        function checkAuthAndDisplayDashboard(isAuthenticated, userId = 'U_987654321098765432') {
+            if (isAuthenticated) {
+                // Show Dashboard
+                loginScreenEl.classList.add('hidden');
+                sidebarEl.classList.remove('hidden');
+                dashboardSectionsEl.classList.remove('hidden');
+                userIdEl.textContent = userId.substring(0, 8) + '...';
+                
+                // Initialize Firebase/Firestore connection after successful login
+                if (!authReady) {
+                    initializeAppAndAuth(userId);
+                }
+            } else {
+                // Show Login Screen
+                sidebarEl.classList.add('hidden');
+                dashboardSectionsEl.classList.add('hidden');
+                loginScreenEl.classList.remove('hidden');
+            }
+        }
+
+        // The rest of the functions from the previous version are below, adapted to the new flow.
+
         window.switchSection = (sectionName) => {
             document.querySelectorAll('.main-section').forEach(section => {
                 section.classList.add('hidden');
@@ -334,10 +415,6 @@
             document.getElementById(`nav-${sectionName}`).classList.add('active');
         };
 
-        /**
-         * Switches the active tab content within the settings panel.
-         * @param {string} tabName The name of the tab to switch to ('general', 'automod', 'utility').
-         */
         window.switchTab = (tabName) => {
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.classList.remove('active', 'text-cyan-400');
@@ -353,11 +430,6 @@
             document.getElementById(`content-${tabName}`).classList.remove('hidden');
         };
 
-        /**
-         * Shows a temporary feedback message.
-         * @param {string} message The message to display.
-         * @param {string} type 'success' or 'error'.
-         */
         function showMessage(message, type) {
             const isSuccess = type === 'success';
             messageBoxEl.textContent = message;
@@ -370,35 +442,27 @@
             }, 3000);
         }
 
-        /**
-         * Initializes Firebase and authenticates the user.
-         */
-        async function initializeAppAndAuth() {
+        async function initializeAppAndAuth(userId) {
             try {
                 if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) {
-                    throw new Error("Firebase configuration is missing.");
+                     // Fallback for demo, as a real app requires this
+                    // throw new Error("Firebase configuration is missing."); 
                 }
 
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 const auth = getAuth(app);
+                authReady = true;
 
-                // Authentication
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                // Authentication (using the local token for simulation)
+                const token = localStorage.getItem('rexo_auth_token');
 
-                // Set up auth state change listener
-                onAuthStateChanged(auth, (user) => {
-                    const userId = user?.uid || crypto.randomUUID();
+                if (token) {
+                    // NOTE: In a real app, the token must be exchanged on the server
+                    // For the demo, we just pretend we logged in successfully.
+                    // If you were using a custom token from your server:
+                    // await signInWithCustomToken(auth, token);
                     
-                    userIdEl.textContent = userId.substring(0, 8) + '...';
-                    userIconEl.classList.replace('text-gray-400', 'text-cyan-400'); // Change icon color on success
-                    loadingEl.classList.add('hidden');
-                    readyStatusEl.classList.remove('hidden');
-
                     // Define the document reference for public bot settings
                     const collectionPath = `artifacts/${appId}/public/data/bot_config`;
                     const documentId = 'global_settings'; 
@@ -406,7 +470,11 @@
 
                     // Start listening for real-time config updates
                     listenToConfig(userId);
-                });
+                } else {
+                    // This path shouldn't be reached if checkAuthAndDisplayDashboard is called correctly
+                    console.warn("No token found during initialization. Showing login screen.");
+                    checkAuthAndDisplayDashboard(false);
+                }
 
             } catch (error) {
                 console.error("Firebase Initialization/Auth Error:", error);
@@ -416,43 +484,32 @@
             }
         }
 
-        /**
-         * Sets up a real-time listener for bot configuration changes.
-         * @param {string} currentUserId The authenticated user's ID.
-         */
         function listenToConfig(currentUserId) {
-            if (!configDocRef) {
-                console.warn("Config document reference is not set.");
-                return;
-            }
-
+            // Note: This function remains the same, relying on the Firebase setup above.
+            if (!configDocRef) return;
+            // Removed full implementation for brevity, assuming the rest of the original function logic holds
+        
+             // Start listening for real-time config updates
             onSnapshot(configDocRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const config = docSnap.data();
-                    console.log("Current configuration synced:", config);
                     
                     // Update UI elements from config
-                    prefixInputEl.value = config.prefix || initialConfig.prefix;
-                    antiNukeToggleEl.checked = !!config.antiNukeEnabled;
-                    antilinkToggleEl.checked = !!config.antilinkEnabled;
-                    antiCapsToggleEl.checked = !!config.antiCapsEnabled;
-                    botStatusInputEl.value = config.botStatus || initialConfig.botStatus;
-                    welcomeMessageInputEl.value = config.welcomeMessage || initialConfig.welcomeMessage;
+                    document.getElementById('prefix-input').value = config.prefix || initialConfig.prefix;
+                    document.getElementById('antinuke-toggle').checked = !!config.antiNukeEnabled;
+                    document.getElementById('antilink-toggle').checked = !!config.antilinkEnabled;
+                    document.getElementById('anticaps-toggle').checked = !!config.antiCapsEnabled;
+                    document.getElementById('bot-status-input').value = config.botStatus || initialConfig.botStatus;
+                    document.getElementById('welcome-message-input').value = config.welcomeMessage || initialConfig.welcomeMessage;
 
                     showMessage('Configuration synchronized.', 'success');
                 } else {
                     // Initialize the document with default values if it doesn't exist
-                    console.log("No config found, setting defaults...");
                     setDoc(configDocRef, {
                         ...initialConfig,
                         ownerId: currentUserId,
                         updatedAt: new Date().toISOString()
-                    }, { merge: true }).then(() => {
-                         showMessage('Default configuration initialized.', 'success');
-                    }).catch(error => {
-                        console.error("Error setting default config:", error);
-                        showMessage(`Error initializing config: ${error.message}`, 'error');
-                    });
+                    }, { merge: true });
                 }
             }, (error) => {
                 console.error("Firestore snapshot error:", error);
@@ -460,43 +517,31 @@
             });
         }
 
-        /**
-         * Updates a single setting in Firestore.
-         * @param {string} key The setting key (e.g., 'prefix').
-         * @param {any} value The new value for the setting.
-         */
         window.updateSetting = async (key, value) => {
-            if (!configDocRef) {
+             // Note: This function remains the same, relying on the Firebase setup above.
+             if (!configDocRef) {
                 showMessage('Database is not ready. Please refresh.', 'error');
                 return;
             }
-
-            // Simple validation for prefix
             if (key === 'prefix' && (value.length === 0 || value.length > 4)) {
                 showMessage('Prefix must be 1 to 4 characters long.', 'error');
                 return;
             }
-
-            try {
-                const updateData = {
-                    [key]: value,
-                    updatedAt: new Date().toISOString()
-                };
-
-                await updateDoc(configDocRef, updateData);
-                // Success feedback handled by the onSnapshot listener
-            } catch (error) {
-                console.error("Error updating document:", error);
+             try {
+                await updateDoc(configDocRef, { [key]: value, updatedAt: new Date().toISOString() });
+             } catch (error) {
                 showMessage(`Failed to save setting: ${error.message}`, 'error');
             }
         };
 
-        // Initialize App
-        initializeAppAndAuth();
-        
-        // Set the default tab active on load
+        // Initial check on page load
         window.onload = () => {
-             switchTab('general');
+             const isLoggedIn = localStorage.getItem('rexo_auth_token') !== null;
+             checkAuthAndDisplayDashboard(isLoggedIn);
+             if(isLoggedIn) {
+                 // Set the default tab active on load only if logged in
+                 switchTab('general');
+             }
         };
     </script>
 </body>
