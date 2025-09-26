@@ -14,7 +14,7 @@
             background: #0d1117;
         }
         
-        /* === PILL-STYLE ACTIVE SIDEBAR LINK === */
+        /* Pill-style active sidebar link */
         .sidebar-link.active {
             background-color: #374151; 
             color: #38bdf8;
@@ -120,16 +120,12 @@
                     </h2>
 
                     <div id="status-card" class="bg-[#111827] p-6 rounded-2xl shadow-xl border border-gray-800">
-                        <div id="loading" class="text-center text-indigo-400 hidden">
-                            <svg class="animate-spin h-6 w-6 mr-3 inline text-cyan-400" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                            <span class="text-lg font-medium text-gray-400">Establishing real-time connection...</span>
-                        </div>
                         <div id="ready-status" class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                  <i class="fas fa-link text-green-500 text-3xl"></i>
                                  <div>
-                                     <p class="text-xl font-bold text-green-400">Database Synced</p>
-                                     <p class="text-sm text-gray-400">Changes below will instantly update the bot's configuration file.</p>
+                                     <p class="text-xl font-bold text-green-400">Mock Database Synced</p>
+                                     <p class="text-sm text-gray-400">Settings are saved locally in your browser for the demo.</p>
                                  </div>
                             </div>
                             <button onclick="switchSection('settings')" class="px-6 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition shadow-md">
@@ -295,113 +291,40 @@
         </main>
     </div>
 
-    <script type="module">
-        // Import necessary Firebase functions
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, setDoc, updateDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Enable Firebase debugging logs
-        setLogLevel('Debug');
-
-        /* Global Variables (provided by the environment) */
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        // In a real application, the auth token comes from your server after Discord OAuth redirect
-        const initialAuthToken = localStorage.getItem('rexo_auth_token') || null; 
-
-        let db;
-        let configDocRef = null;
-        let authReady = false;
-
-        // UI element mapping
+    <script>
+        // --- UI Element Mapping ---
         const sidebarEl = document.getElementById('sidebar');
         const loginScreenEl = document.getElementById('login-screen');
         const dashboardSectionsEl = document.getElementById('dashboard-sections');
         const userIdEl = document.getElementById('user-id');
-        const userIconEl = document.getElementById('user-icon');
-        const loadingEl = document.getElementById('loading');
-        const readyStatusEl = document.getElementById('ready-status');
         const messageBoxEl = document.getElementById('message-box');
         
-        // Inputs (rest are in the HTML)
-        const initialConfig = {
+        // --- Mock Data (Stored/Retrieved Locally) ---
+        const MOCK_CONFIG = {
             prefix: '//',
             antiNukeEnabled: false,
             antilinkEnabled: true,
             antiCapsEnabled: false,
-            botStatus: 'Playing //help',
-            welcomeMessage: 'Welcome [user] to the server!',
+            botStatus: 'Playing //help | Protecting [X] servers',
+            welcomeMessage: 'Welcome [user] to the server! Read the #rules',
         };
 
-        /**
-         * Simulates the Discord login process. In a real app, this redirects to Discord.
-         * For this static dashboard, we simulate success and set a user ID.
-         */
-        window.simulateDiscordLogin = (event) => {
-             // In a real app, you would let the link click happen (event.preventDefault() is removed)
-             // and the server would handle the token return.
-            
-             // Simulating successful login:
-             if (initialAuthToken) {
-                 event.preventDefault();
-                 showMessage('You are already logged in. Redirecting to dashboard...', 'success');
-                 checkAuthAndDisplayDashboard(true);
-             } else {
-                 // Prevent the default link click for a moment to show a message
-                 event.preventDefault();
-                 showMessage('Redirecting to Discord for sign in...', 'success');
-                 
-                 // In a real application, you would remove this timeout and let the browser navigate
-                 setTimeout(() => {
-                    // This is where you would usually redirect to Discord's OAuth
-                    // For the sake of this demo, we bypass the real login and set a dummy token
-                    const dummyToken = 'simulated_user_token_1234567890';
-                    localStorage.setItem('rexo_auth_token', dummyToken);
-                    
-                    // Simulate the auth process completing successfully
-                    checkAuthAndDisplayDashboard(true, 'U_112233445566778899'); // Dummy user ID
-                 }, 2000);
-             }
-        };
-
-        /**
-         * Clears the simulated token and returns to the login screen.
-         */
-        window.logout = () => {
-            localStorage.removeItem('rexo_auth_token');
-            // Reset UI
-            sidebarEl.classList.add('hidden');
-            loginScreenEl.classList.remove('hidden');
-            dashboardSectionsEl.classList.add('hidden');
-            userIdEl.textContent = 'Signed Out';
-            showMessage('Successfully signed out.', 'success');
-        };
-
-        /**
-         * Toggles UI visibility based on authentication status.
-         */
-        function checkAuthAndDisplayDashboard(isAuthenticated, userId = 'U_987654321098765432') {
-            if (isAuthenticated) {
-                // Show Dashboard
-                loginScreenEl.classList.add('hidden');
-                sidebarEl.classList.remove('hidden');
-                dashboardSectionsEl.classList.remove('hidden');
-                userIdEl.textContent = userId.substring(0, 8) + '...';
-                
-                // Initialize Firebase/Firestore connection after successful login
-                if (!authReady) {
-                    initializeAppAndAuth(userId);
-                }
-            } else {
-                // Show Login Screen
-                sidebarEl.classList.add('hidden');
-                dashboardSectionsEl.classList.add('hidden');
-                loginScreenEl.classList.remove('hidden');
+        function getLocalConfig() {
+            try {
+                const stored = localStorage.getItem('rexo_config');
+                return stored ? JSON.parse(stored) : MOCK_CONFIG;
+            } catch {
+                return MOCK_CONFIG;
             }
         }
 
-        // The rest of the functions from the previous version are below, adapted to the new flow.
+        function saveLocalConfig(config) {
+            localStorage.setItem('rexo_config', JSON.stringify(config));
+            showMessage('Configuration saved locally!', 'success');
+        }
+
+
+        // --- UI Manipulation Functions (kept from previous versions) ---
 
         window.switchSection = (sectionName) => {
             document.querySelectorAll('.main-section').forEach(section => {
@@ -442,106 +365,99 @@
             }, 3000);
         }
 
-        async function initializeAppAndAuth(userId) {
-            try {
-                if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) {
-                     // Fallback for demo, as a real app requires this
-                    // throw new Error("Firebase configuration is missing."); 
-                }
-
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                const auth = getAuth(app);
-                authReady = true;
-
-                // Authentication (using the local token for simulation)
-                const token = localStorage.getItem('rexo_auth_token');
-
-                if (token) {
-                    // NOTE: In a real app, the token must be exchanged on the server
-                    // For the demo, we just pretend we logged in successfully.
-                    // If you were using a custom token from your server:
-                    // await signInWithCustomToken(auth, token);
-                    
-                    // Define the document reference for public bot settings
-                    const collectionPath = `artifacts/${appId}/public/data/bot_config`;
-                    const documentId = 'global_settings'; 
-                    configDocRef = doc(db, collectionPath, documentId);
-
-                    // Start listening for real-time config updates
-                    listenToConfig(userId);
-                } else {
-                    // This path shouldn't be reached if checkAuthAndDisplayDashboard is called correctly
-                    console.warn("No token found during initialization. Showing login screen.");
-                    checkAuthAndDisplayDashboard(false);
-                }
-
-            } catch (error) {
-                console.error("Firebase Initialization/Auth Error:", error);
-                loadingEl.classList.add('hidden');
-                document.getElementById('ready-status').innerHTML = `<p class="text-lg font-semibold text-red-400">Error: Not connected.</p><p class="text-sm text-gray-400">Check console for details.</p>`;
-                showMessage(`Initialization error: ${error.message}`, 'error');
-            }
-        }
-
-        function listenToConfig(currentUserId) {
-            // Note: This function remains the same, relying on the Firebase setup above.
-            if (!configDocRef) return;
-            // Removed full implementation for brevity, assuming the rest of the original function logic holds
-        
-             // Start listening for real-time config updates
-            onSnapshot(configDocRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const config = docSnap.data();
-                    
-                    // Update UI elements from config
-                    document.getElementById('prefix-input').value = config.prefix || initialConfig.prefix;
-                    document.getElementById('antinuke-toggle').checked = !!config.antiNukeEnabled;
-                    document.getElementById('antilink-toggle').checked = !!config.antilinkEnabled;
-                    document.getElementById('anticaps-toggle').checked = !!config.antiCapsEnabled;
-                    document.getElementById('bot-status-input').value = config.botStatus || initialConfig.botStatus;
-                    document.getElementById('welcome-message-input').value = config.welcomeMessage || initialConfig.welcomeMessage;
-
-                    showMessage('Configuration synchronized.', 'success');
-                } else {
-                    // Initialize the document with default values if it doesn't exist
-                    setDoc(configDocRef, {
-                        ...initialConfig,
-                        ownerId: currentUserId,
-                        updatedAt: new Date().toISOString()
-                    }, { merge: true });
-                }
-            }, (error) => {
-                console.error("Firestore snapshot error:", error);
-                showMessage(`Real-time error: ${error.message}`, 'error');
-            });
-        }
-
-        window.updateSetting = async (key, value) => {
-             // Note: This function remains the same, relying on the Firebase setup above.
-             if (!configDocRef) {
-                showMessage('Database is not ready. Please refresh.', 'error');
-                return;
-            }
+        /**
+         * Mocks saving a setting to local storage instead of Firebase.
+         */
+        window.updateSetting = (key, value) => {
             if (key === 'prefix' && (value.length === 0 || value.length > 4)) {
                 showMessage('Prefix must be 1 to 4 characters long.', 'error');
                 return;
             }
-             try {
-                await updateDoc(configDocRef, { [key]: value, updatedAt: new Date().toISOString() });
-             } catch (error) {
-                showMessage(`Failed to save setting: ${error.message}`, 'error');
-            }
+            
+            const config = getLocalConfig();
+            // Handle boolean toggles correctly
+            const finalValue = (key === 'antiNukeEnabled' || key === 'antilinkEnabled' || key === 'antiCapsEnabled') ? !!value : value;
+            config[key] = finalValue;
+            
+            saveLocalConfig(config);
         };
 
-        // Initial check on page load
+        /**
+         * Loads settings from local storage and applies them to inputs.
+         */
+        function loadSettingsToUI() {
+            const config = getLocalConfig();
+            document.getElementById('prefix-input').value = config.prefix;
+            document.getElementById('antinuke-toggle').checked = config.antiNukeEnabled;
+            document.getElementById('antilink-toggle').checked = config.antilinkEnabled;
+            document.getElementById('anticaps-toggle').checked = config.antiCapsEnabled;
+            document.getElementById('bot-status-input').value = config.botStatus;
+            document.getElementById('welcome-message-input').value = config.welcomeMessage;
+        }
+
+
+        // --- Login/Auth Logic (Simplified) ---
+
+        /**
+         * Simulates the Discord login process by setting a local token.
+         */
+        window.simulateDiscordLogin = (event) => {
+             // In a real application, you would be redirected to the URL in the <a> tag's href
+             // We prevent the default action here to simulate the login success without leaving the page
+             event.preventDefault(); 
+             showMessage('Simulating successful login from Discord...', 'success');
+            
+             // Set a dummy token and force the dashboard open
+             localStorage.setItem('rexo_auth_token', 'simulated_logged_in_user');
+            
+             setTimeout(() => {
+                 checkAuthAndDisplayDashboard(true, 'RexoDev#0001'); // Pass a mock username
+             }, 1500);
+        };
+
+        /**
+         * Clears the simulated token and returns to the login screen.
+         */
+        window.logout = () => {
+            localStorage.removeItem('rexo_auth_token');
+            // Reset UI
+            sidebarEl.classList.add('hidden');
+            loginScreenEl.classList.remove('hidden');
+            dashboardSectionsEl.classList.add('hidden');
+            userIdEl.textContent = 'Signed Out';
+            showMessage('Successfully signed out.', 'success');
+        };
+
+        /**
+         * Toggles UI visibility based on authentication status.
+         */
+        function checkAuthAndDisplayDashboard(isAuthenticated, username = 'RexoDev#0001') {
+            if (isAuthenticated) {
+                // Show Dashboard
+                loginScreenEl.classList.add('hidden');
+                sidebarEl.classList.remove('hidden');
+                dashboardSectionsEl.classList.remove('hidden');
+                
+                // Update User Info
+                const uidMock = username.replace('#', '_').toUpperCase().substring(0, 8) + '...';
+                userIdEl.textContent = uidMock;
+                
+                // Load saved settings and set default view
+                loadSettingsToUI();
+                switchSection('overview');
+                switchTab('general');
+            } else {
+                // Show Login Screen
+                sidebarEl.classList.add('hidden');
+                dashboardSectionsEl.classList.add('hidden');
+                loginScreenEl.classList.remove('hidden');
+            }
+        }
+
+        // Initial check on page load: See if the user is already "logged in"
         window.onload = () => {
              const isLoggedIn = localStorage.getItem('rexo_auth_token') !== null;
              checkAuthAndDisplayDashboard(isLoggedIn);
-             if(isLoggedIn) {
-                 // Set the default tab active on load only if logged in
-                 switchTab('general');
-             }
         };
     </script>
 </body>
