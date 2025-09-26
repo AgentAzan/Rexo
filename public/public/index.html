@@ -1,214 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rexo Dashboard</title>
-    <!-- Tailwind CSS from CDN for easy styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1a1a2e; /* Dark purple/blue background */
-            color: #e0e0e0;
-        }
-        /* Custom scrollbar for a sleek look */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #282a44;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4a4e70;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #5c628f;
-        }
-        .animate-fadeIn {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rexo Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="bg-gray-900 text-gray-100 font-sans">
+  <!-- Navbar -->
+  <nav class="bg-gray-800 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-indigo-400">Rexo Dashboard</h1>
+      <div class="space-x-4">
+        <a href="https://discord.gg/uXWMaUdRvV" target="_blank" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500">Support Server</a>
+        <a href="https://discord.com/oauth2/authorize?client_id=1398582139464847411&permissions=8&integration_type=0&scope=bot+applications.commands" target="_blank" class="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-500">Invite Rexo</a>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Header Section -->
-    <header class="bg-[#282a44] p-4 shadow-lg rounded-b-xl flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-            <!-- Rexo Bot Logo (Inline SVG) -->
-            <svg class="w-10 h-10 text-indigo-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM6.5 10a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM10 13a3 3 0 100-6 3 3 0 000 6zm3.5-3a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM17 10a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
-            </svg>
-            <h1 class="text-3xl font-bold text-white">Rexo Dashboard</h1>
+  <!-- Hero Section -->
+  <section class="text-center py-16 bg-gradient-to-r from-indigo-700 to-purple-700">
+    <h2 class="text-4xl font-extrabold mb-4">Manage Your Discord Servers with Rexo</h2>
+    <p class="text-lg max-w-2xl mx-auto mb-6">A powerful moderation & utility bot inspired by Dyno, tailored for your community.</p>
+    <a href="#servers" class="px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold">Get Started</a>
+  </section>
+
+  <!-- Server Cards -->
+  <section id="servers" class="max-w-6xl mx-auto py-12 px-4">
+    <h3 class="text-2xl font-bold mb-6">Your Servers</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Example server card -->
+      <div class="bg-gray-800 rounded-xl shadow-md p-6 hover:shadow-xl transition">
+        <div class="flex items-center space-x-4 mb-4">
+          <img src="https://cdn.discordapp.com/icons/0/0.png" alt="Server Icon" class="w-12 h-12 rounded-full">
+          <h4 class="text-lg font-semibold">Example Server</h4>
         </div>
-        <div class="flex items-center space-x-4">
-            <a href="https://discord.gg/uXWMaUdRvV" target="_blank" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-semibold transition-colors duration-200">
-                Join Support
-            </a>
-            <a href="https://discord.com/oauth2/authorize?client_id=1398582139464847411&permissions=8&integration_type=0&scope=bot+applications.commands" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full font-semibold transition-colors duration-200">
-                Add Bot
-            </a>
-            <span id="botStatus" class="flex items-center text-sm font-semibold">
-                <span class="w-3 h-3 rounded-full bg-green-500 animate-pulse mr-2"></span>
-                Bot Online
-            </span>
-            <button id="signOutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full font-semibold transition-colors duration-200 hidden">
-                Sign Out
-            </button>
-        </div>
-    </header>
+        <p class="text-sm text-gray-400 mb-4">Manage moderation, automod, roles, and more with Rexo.</p>
+        <a href="#" class="block text-center px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500">Configure</a>
+      </div>
 
-    <!-- Main Content Area - Initially hidden -->
-    <main id="dashboardView" class="flex-grow p-6 hidden animate-fadeIn">
-        <div class="container mx-auto">
-            <div class="mb-6 bg-[#2e3053] p-4 rounded-xl shadow-lg">
-                <p class="text-sm font-medium text-gray-400">Current User ID:</p>
-                <p id="userIdDisplay" class="font-mono text-xs text-indigo-400 break-all"></p>
-            </div>
-            <!-- Dashboard Overview Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="bg-[#2e3053] p-6 rounded-2xl shadow-xl transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <h2 class="text-xl text-indigo-400 font-semibold mb-2">Servers</h2>
-                    <p class="text-4xl font-extrabold text-white" id="serverCount">...</p>
-                    <p class="text-sm text-gray-400 mt-1">Bot is in these many servers.</p>
-                </div>
-                <div class="bg-[#2e3053] p-6 rounded-2xl shadow-xl transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <h2 class="text-xl text-indigo-400 font-semibold mb-2">Total Users</h2>
-                    <p class="text-4xl font-extrabold text-white" id="userCount">...</p>
-                    <p class="text-sm text-gray-400 mt-1">Total users bot can see.</p>
-                </div>
-                <div class="bg-[#2e3053] p-6 rounded-2xl shadow-xl transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <h2 class="text-xl text-indigo-400 font-semibold mb-2">Uptime</h2>
-                    <p class="text-4xl font-extrabold text-white" id="uptime">...</p>
-                    <p class="text-sm text-gray-400 mt-1">Time since last restart.</p>
-                </div>
-                <div class="bg-[#2e3053] p-6 rounded-2xl shadow-xl transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                    <h2 class="text-xl text-indigo-400 font-semibold mb-2">Ping</h2>
-                    <p class="text-4xl font-extrabold text-white" id="ping">...</p>
-                    <p class="text-sm text-gray-400 mt-1">Bot's latency to Discord.</p>
-                </div>
-            </div>
+      <!-- Duplicate this card dynamically with JS for real servers after OAuth2 login -->
+    </div>
+  </section>
 
-            <!-- Configuration Section -->
-            <section class="bg-[#2e3053] p-8 rounded-2xl shadow-xl animate-fadeIn">
-                <h2 class="text-2xl font-bold text-white mb-6">Server Configuration</h2>
-                <div class="space-y-6">
-                    <div class="flex items-center justify-between bg-[#3c3f68] p-4 rounded-xl transition-all duration-200 hover:bg-[#4a4e70]">
-                        <div>
-                            <p class="text-white font-semibold">Anti-Nuke Protection</p>
-                            <p class="text-gray-400 text-sm">Prevents malicious users from deleting channels and roles.</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="antiNukeToggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
-                        </label>
-                    </div>
-                    
-                    <div class="flex items-center justify-between bg-[#3c3f68] p-4 rounded-xl transition-all duration-200 hover:bg-[#4a4e70]">
-                        <div>
-                            <p class="text-white font-semibold">Anti-Raid Protection</p>
-                            <p class="text-gray-400 text-sm">Automatically detects and responds to raid attempts.</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="antiRaidToggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
-                        </label>
-                    </div>
-                    
-                    <div class="flex items-center justify-between bg-[#3c3f68] p-4 rounded-xl transition-all duration-200 hover:bg-[#4a4e70]">
-                        <div>
-                            <p class="text-white font-semibold">Auto-Prune Members</p>
-                            <p class="text-gray-400 text-sm">Automatically removes inactive members to keep the server clean.</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="autoPruneToggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
-                        </label>
-                    </div>
-
-                    <div class="flex items-center justify-between bg-[#3c3f68] p-4 rounded-xl transition-all duration-200 hover:bg-[#4a4e70]">
-                        <div>
-                            <p class="text-white font-semibold">Welcome Messages</p>
-                            <p class="text-gray-400 text-sm">Sends a customizable welcome message to new members.</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="welcomeMessageToggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
-                        </label>
-                    </div>
-
-                    <div class="flex items-center justify-between bg-[#3c3f68] p-4 rounded-xl transition-all duration-200 hover:bg-[#4a4e70]">
-                        <div>
-                            <p class="text-white font-semibold">Logging</p>
-                            <p class="text-gray-400 text-sm">Logs moderation actions and other important server events.</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="loggingToggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
-                        </label>
-                    </div>
-
-                    <div class="flex items-center justify-between bg-[#3c3f68] p-4 rounded-xl transition-all duration-200 hover:bg-[#4a4e70]">
-                        <div>
-                            <p class="text-white font-semibold">Auto-Role Management</p>
-                            <p class="text-gray-400 text-sm">Automatically assigns a specific role to new members upon joining.</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="roleManagementToggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
-                        </label>
-                    </div>
-
-                    <div class="flex items-center justify-between bg-[#3c3f68] p-4 rounded-xl transition-all duration-200 hover:bg-[#4a4e70]">
-                        <div>
-                            <p class="text-white font-semibold">Leveling System</p>
-                            <p class="text-gray-400 text-sm">Enable a fun XP-based leveling system for your community.</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="levelingToggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
-                        </label>
-                    </div>
-
-                    <div class="bg-[#3c3f68] p-4 rounded-xl transition-all duration-200 hover:bg-[#4a4e70]">
-                        <p class="text-white font-semibold mb-2">Custom Commands</p>
-                        <p class="text-gray-400 text-sm mb-4">Create, edit, or delete custom bot commands for your server.</p>
-                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-xl transition-colors duration-200" onclick="showNotification('This button would open a custom commands editor.')">
-                            Manage Custom Commands
-                        </button>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <!-- Login/Sign-up View -->
-    <div id="authView" class="flex-grow flex items-center justify-center p-6 animate-fadeIn">
-        <div class="bg-[#2e3053] p-8 rounded-2xl shadow-xl w-full max-w-sm text-center">
-            <h2 class="text-2xl font-bold text-white mb-4">Welcome to Rexo</h2>
-            <p class="text-gray-400 mb-6">Sign in or create an account to manage your bot.</p>
-            <div id="loginForm" class="space-y-4">
-                <input id="emailInput" type="email" placeholder="Email" class="w-full p-3 rounded-lg bg-[#3c3f68] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                <input id="passwordInput" type="password" placeholder="Password" class="w-full p-3 rounded-lg bg-[#3c3f68] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                <button id="signInBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-full transition-colors duration-200">
-                    Sign In
-                </button>
-                <button id="signUpBtn" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-full transition-colors duration-200">
-                    Sign Up
-                </button>
-            </div>
-            <div class="relative flex py-5 items-center">
-                <div class="flex-grow border-t border-gray-600"></div>
-                <span class="flex-shrink mx-4 text-gray-500 text-sm">or</span>
-                <div class="flex-grow border-t border-gray-600"></div>
-            </div>
-            <!-- Continue with Discord Button -->
-            <a href="https://discord.com/oauth2/authorize?client_id=1398582139464847411&permissions=8&integration_type=0&scope=bot+applications.commands" target="_blank"
-                class="w-full flex items-center justify-center bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold py-3 rounded-full transition-colors duration-200">
-                <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20.592 5.006c-.84-.526-1.722-.924-2.607-1.196a1.18 1.18 0 00-.916.143 1.173 1.173 0 00-.518.91c0 .248-.03.504-.085.748-.052.247-.116.49-.19.728a15.42 15.42 0 01-1.258 3.515 15.69 15.69 0 01-2.02 3.193 15.66 15.66 0 01-2.637 2.87c-.82.68-1.745 1.17-2.73 1.455-.47.14-.942.246-1.42.274a.82.82 0 01-.84-.813c0-.288.1-.575.247-.837.147-.263.34-.51.57-.724a14.24 14.24 0 002.046-2.227 15.487 15.487 0 002.34-3.54c.7-1.32.99-2.68.868-4.04-.09-1.02-.38-2.04-.86-2.96-.48-.92-.89-1.78-1.25-2.62a.455.455 0 00-.51-.253.468.468 0 00-.323.513c-.02.1-.037.21-.05.313-.106 1.054-.153 2.112-.13 3.167.025 1.1.205 2.19.548 3.23a10.82 10.82 0 01.996 2.58c.34.82.72 1.63 1.15 2.42a.59.59 0 00.56.28.59.59 0 00.56-.28c.42-.79.8-1.6 1.15-2.42.34-.8.66-1.63.99-2.58.34-.94.5-1.93.54-2.93.04-1.12.02-2.25-.06-3.37-.09-1.2-.3-2.4-.63-3.56a1.12 1.12 0 00-.54-.62c-.37-.18-.76-.27-1.17-.27a.95.95 0 00-.81.4c-.23.23-.42.5-.57.8-.15.3-.26.63-.33.97-.07.34-.1.68-.1.97-.02.43.08.85.3 1.25a2.12 2.12 0 00.86 1.18c.6.35 1.25.56 1.94.59.26.01.52-.01.78-.04.26-.04.52-.1.77-.18a1.9 1.9 0 001.07-1.09c.27-.6.44-1.23.49-1.9.04-.67.02-1.34-.04-2.01-.06-.67-.17-1.34-.33-2a2.33 2.33 0 00-.63-1.05c-.32-.28-.7-.47-1.13-.57-.42-.11-.87-.13-1.32-.08-.45.05-.9.17-1.3.36-.4.18-.77.4-1.1.66-.23-.05-.46-.1-.7-.14-.23-.04-.47-.05-.7-.04-.5.03-.98.15-1.4.37-.4.22-.76.5-1.08.86-.31.35-.58.74-.79 1.15-.22.42-.37.87-.46 1.34a1.86 1.86 0 00.22 1.54c.15.15.3.3.46.45.16.14.3.29.45.43.2.19.39.37.58.55.23.23.44.47.64.7c.2.23.38.46.56.7.2.27.38.55.53.84.16.3.27.6.35.91a2.1 2.1 0 00.1 1.05c-.01.08-.02.16-.03.24-.07.4-.1.82-.1 1.24-.04 1.17.26 2.3.89 3.33a10.86 10.86 0 001.37 2.12c.5.6.82 1.02.97 1.26a.545.545 0 00.51.13c.2-.07.37-.25.53-.5a.86.86 0 00.19-.36c.03-.1.04-.2.06-.31.02-.12.02-.24.01-.36a10.5 10.5 0 00-.73-2.91 10.66 10.66 0 00-1.25-2.6c-.4-.7-.78-1.42-1.14-2.17a.64.64 0 00-.45-.3c-.15-.05-.3-.07-.46-.07a.46.46 0 00-.33.1c-.2.12-.34.3-.43.5-.09.2-.14.43-.16.68-.02.25-.01.5-.01.76.01.26.03.52.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.58-.07-.19-.17-.37-.28-.54a.7.7 0 00-.2-.23c-.13-.09-.27-.16-.42-.2-.16-.04-.32-.05-.48-.03a.52.52 0 00-.3.14c-.1.08-.2.2-.28.32-.08.13-.13.28-.15.44-.02.16-.02.32-.02.48.01.16.03.32.07.78a.42.42 0 00.17.29c.1.08.2.1.32.06.12-.04.22-.1.3-.2a.4.4 0 00.16-.3c.02-.2-.01-.4-.08-.5
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-12">
+    <p>&copy; 2025 Rexo Bot. All rights reserved.</p>
+  </footer>
+</body>
+</html>
