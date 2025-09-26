@@ -366,7 +366,7 @@
         }
 
         /**
-         * Mocks saving a setting to local storage instead of Firebase.
+         * Mocks saving a setting to local storage instead of a backend.
          */
         window.updateSetting = (key, value) => {
             if (key === 'prefix' && (value.length === 0 || value.length > 4)) {
