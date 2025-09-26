@@ -1,132 +1,102 @@
-<section id="commands" class="max-w-7xl mx-auto py-12 px-4">
-  <h2 class="text-3xl font-bold text-indigo-400 mb-8 text-center">Rexo Commands & Help</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rexo Bot Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-gray-100 font-sans">
 
-  <!-- Prefix Info -->
-  <div class="bg-gray-800 rounded-xl shadow-md p-6 mb-8">
-    <h3 class="text-xl font-semibold mb-2">Prefix</h3>
-    <p class="text-gray-400">You can use the prefix <span class="text-indigo-400 font-semibold">..</span> or slash commands (e.g., <span class="text-indigo-400">/help</span>).</p>
-  </div>
-
-  <!-- Quick Examples -->
-  <div class="bg-gray-800 rounded-xl shadow-md p-6 mb-8">
-    <h3 class="text-xl font-semibold mb-4">Quick Examples</h3>
-    <ul class="space-y-3 text-gray-200">
-      <li><span class="text-indigo-400 font-semibold">..help</span> — Show this help menu with all commands</li>
-      <li><span class="text-indigo-400 font-semibold">..ping</span> — Check bot latency</li>
-      <li><span class="text-indigo-400 font-semibold">..clear &lt;amount&gt;</span> — Bulk delete messages (requires <em>Manage Messages</em>)</li>
-      <li><span class="text-indigo-400 font-semibold">..kick @user [reason]</span> — Kick a member</li>
-      <li><span class="text-indigo-400 font-semibold">..ban @user [reason]</span> — Ban a member</li>
-      <li><span class="text-indigo-400 font-semibold">..mute @user</span> — Temporarily mute a member (timeout)</li>
-      <li><span class="text-indigo-400 font-semibold">..antilink on|off</span> — Toggle anti-link protection</li>
-      <li><span class="text-indigo-400 font-semibold">..antispam set &lt;max&gt; &lt;seconds&gt;</span> — Configure anti-spam rules</li>
-      <li><span class="text-indigo-400 font-semibold">..wordfilter add|remove|list &lt;word&gt;</span> — Manage banned words</li>
-      <li><span class="text-indigo-400 font-semibold">..nukemode on|off</span> — Enable/disable emergency safe mode</li>
-      <li><span class="text-indigo-400 font-semibold">..enable</span> — Interactive security settings menu</li>
-    </ul>
-  </div>
-
-  <!-- Command Categories -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    
-    <!-- Moderation -->
-    <div class="bg-gray-800 rounded-xl shadow-md p-6 hover:shadow-xl transition">
-      <h3 class="text-lg font-bold text-indigo-400 mb-4">Moderation</h3>
-      <ul class="space-y-2 text-gray-200">
-        <li>
-          <span class="font-semibold">..kick @user [reason]</span> — Kick a member from your server.
-        </li>
-        <li>
-          <span class="font-semibold">..ban @user [reason]</span> — Ban a member.
-        </li>
-        <li>
-          <span class="font-semibold">..mute @user</span> — Temporarily mute a member. Use slash commands for duration.
-        </li>
-        <li>
-          <span class="font-semibold">..unmute @user</span> — Unmute a previously muted member.
-        </li>
-        <li>
-          <span class="font-semibold">..clear &lt;amount&gt;</span> — Bulk delete messages. Requires Manage Messages permission.
-        </li>
-      </ul>
+  <!-- Navbar -->
+  <nav class="bg-gray-900 bg-opacity-80 backdrop-blur-md border-b border-gray-700">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-indigo-400">Rexo Dashboard</h1>
+      <div class="flex space-x-4">
+        <a href="#login" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition font-semibold">Login</a>
+        <a href="#signup" class="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-500 transition font-semibold">Sign Up</a>
+        <a href="https://discord.gg/uXWMaUdRvV" target="_blank" class="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition font-semibold">Support</a>
+      </div>
     </div>
+  </nav>
 
-    <!-- Anti-Spam & Security -->
-    <div class="bg-gray-800 rounded-xl shadow-md p-6 hover:shadow-xl transition">
-      <h3 class="text-lg font-bold text-indigo-400 mb-4">Security & Anti-Spam</h3>
-      <ul class="space-y-2 text-gray-200">
-        <li>
-          <span class="font-semibold">..antilink on|off</span> — Toggle anti-link system. Whitelist certain channels if needed.
-        </li>
-        <li>
-          <span class="font-semibold">..antispam set &lt;max&gt; &lt;seconds&gt;</span> — Set max messages allowed per timeframe.
-        </li>
-        <li>
-          <span class="font-semibold">..wordfilter add|remove|list &lt;word&gt;</span> — Manage banned words in chat.
-        </li>
-        <li>
-          <span class="font-semibold">..nukemode on|off</span> — Emergency mode: automatically lock down channels if spamming detected.
-        </li>
-        <li>
-          <span class="font-semibold">..enable</span> — Opens interactive security menu to toggle all features.
-        </li>
-      </ul>
+  <!-- Hero Section -->
+  <section class="text-center py-24 px-4 bg-gradient-to-r from-indigo-700 to-purple-700 rounded-b-3xl shadow-xl">
+    <h2 class="text-5xl font-extrabold mb-6">Manage Your Discord Servers Like a Pro</h2>
+    <p class="text-lg max-w-3xl mx-auto mb-8 text-gray-100/90">Rexo is a powerful moderation & utility bot that makes managing your community effortless. Automate, secure, and customize your servers with ease.</p>
+    <a href="#servers" class="inline-block px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-semibold text-lg transition">Get Started</a>
+  </section>
+
+  <!-- Login / Signup Section -->
+  <section id="login-signup" class="max-w-6xl mx-auto py-16 px-4 grid md:grid-cols-2 gap-12">
+    <div class="bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition">
+      <h3 class="text-2xl font-bold text-indigo-400 mb-6 text-center">Login with Discord</h3>
+      <p class="text-gray-400 mb-6 text-center">Sign in quickly using your Discord account.</p>
+      <a href="#" class="w-full block text-center py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold transition">Continue with Discord</a>
     </div>
-
-    <!-- Info & Utility -->
-    <div class="bg-gray-800 rounded-xl shadow-md p-6 hover:shadow-xl transition">
-      <h3 class="text-lg font-bold text-indigo-400 mb-4">Info & Utility</h3>
-      <ul class="space-y-2 text-gray-200">
-        <li>
-          <span class="font-semibold">..help</span> — Show full command menu.
-        </li>
-        <li>
-          <span class="font-semibold">..ping</span> — Check bot latency.
-        </li>
-        <li>
-          <span class="font-semibold">..uptime</span> — Check how long the bot has been online.
-        </li>
-        <li>
-          <span class="font-semibold">..serverinfo</span> — Show server information.
-        </li>
-        <li>
-          <span class="font-semibold">..roleinfo</span> — Show info about a role.
-        </li>
-        <li>
-          <span class="font-semibold">..userinfo @user</span> — Show info about a member.
-        </li>
-      </ul>
+    <div class="bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition">
+      <h3 class="text-2xl font-bold text-green-400 mb-6 text-center">Sign Up</h3>
+      <p class="text-gray-400 mb-6 text-center">Create a new account or link your Discord.</p>
+      <a href="#" class="w-full block text-center py-3 bg-green-600 hover:bg-green-500 rounded-lg font-semibold transition">Sign Up</a>
     </div>
+  </section>
 
-    <!-- Warnings & Logs -->
-    <div class="bg-gray-800 rounded-xl shadow-md p-6 hover:shadow-xl transition">
-      <h3 class="text-lg font-bold text-indigo-400 mb-4">Warnings & Logs</h3>
-      <ul class="space-y-2 text-gray-200">
-        <li>
-          <span class="font-semibold">..warn @user [reason]</span> — Issue a warning to a user.
-        </li>
-        <li>
-          <span class="font-semibold">..warnings @user</span> — Show warnings a user has.
-        </li>
-        <li>
-          <span class="font-semibold">..softban @user [reason]</span> — Kick + delete messages (temporary ban).
-        </li>
-        <li>
-          <span class="font-semibold">..tempban @user [duration]</span> — Temporarily ban a user.
-        </li>
-      </ul>
-    </div>
-
-  </div>
-
-  <!-- Toggle Section -->
-  <div class="mt-12 bg-gray-800 rounded-xl p-6 shadow-md">
-    <h3 class="text-xl font-bold text-indigo-400 mb-4">Toggle Features</h3>
-    <p class="text-gray-200 mb-4">Easily turn features on or off:</p>
+  <!-- Server Cards -->
+  <section id="servers" class="max-w-7xl mx-auto py-12 px-4">
+    <h3 class="text-3xl font-bold mb-8 text-center text-indigo-400">Your Servers</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <button class="w-full py-2 px-4 bg-indigo-600 rounded-lg hover:bg-indigo-500 transition font-semibold">Toggle Anti-Link</button>
-      <button class="w-full py-2 px-4 bg-indigo-600 rounded-lg hover:bg-indigo-500 transition font-semibold">Toggle WordFilter</button>
-      <button class="w-full py-2 px-4 bg-indigo-600 rounded-lg hover:bg-indigo-500 transition font-semibold">Toggle Anti-Spam</button>
-      <button class="w-full py-2 px-4 bg-indigo-600 rounded-lg hover:bg-indigo-500 transition font-semibold">Toggle Nuke Mode</button>
+      <!-- Example Server Card -->
+      <div class="bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition overflow-hidden border border-gray-700">
+        <div class="p-6">
+          <div class="flex items-center space-x-4 mb-4">
+            <img src="https://cdn.discordapp.com/icons/0/0.png" alt="Server Icon" class="w-16 h-16 rounded-full border-2 border-indigo-400">
+            <h4 class="text-xl font-semibold">Example Server</h4>
+          </div>
+          <p class="text-gray-400 mb-6">Manage moderation, automod, roles, analytics, and more with Rexo Bot.</p>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-500 text-sm">12 Bots Active</span>
+            <a href="#" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition font-semibold text-sm">Configure</a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- Commands Section -->
+  <section id="commands" class="max-w-7xl mx-auto py-12 px-4">
+    <h3 class="text-3xl font-bold mb-8 text-center text-indigo-400">Commands & Features</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Example Command Card -->
+      <div class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition border border-gray-700">
+        <h4 class="text-xl font-semibold text-indigo-400 mb-4">..help</h4>
+        <p class="text-gray-300 mb-4">Show the full help menu with all commands available in the server.</p>
+        <p class="text-gray-400 text-sm mb-2">Usage: <span class="text-indigo-400">..help</span> or <span class="text-indigo-400">/help</span></p>
+        <p class="text-gray-400 text-sm">Toggleable: No</p>
+      </div>
+
+      <div class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition border border-gray-700">
+        <h4 class="text-xl font-semibold text-indigo-400 mb-4">..antilink</h4>
+        <p class="text-gray-300 mb-4">Toggle anti-link protection in your server. Automatically deletes messages containing links from non-whitelisted users.</p>
+        <p class="text-gray-400 text-sm mb-2">Usage: <span class="text-indigo-400">..antilink on</span> | <span class="text-indigo-400">..antilink off</span></p>
+        <p class="text-gray-400 text-sm">Toggleable: Yes</p>
+      </div>
+
+      <div class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition border border-gray-700">
+        <h4 class="text-xl font-semibold text-indigo-400 mb-4">..mute</h4>
+        <p class="text-gray-300 mb-4">Mute a member temporarily. Can be used with slash commands for specific durations.</p>
+        <p class="text-gray-400 text-sm mb-2">Usage: <span class="text-indigo-400">..mute @user</span></p>
+        <p class="text-gray-400 text-sm">Toggleable: No</p>
+      </div>
+
+      <!-- Add more commands dynamically or manually -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 text-center py-6 mt-12 border-t border-gray-700">
+    <p>&copy; 2025 Rexo Bot. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
